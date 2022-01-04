@@ -27,16 +27,6 @@
      <string>Arquivo</string>
     </property>
    </widget>
-   <widget class="QTableView" name="tb_faturamento">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>179</y>
-      <width>691</width>
-      <height>315</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="bt_predizer">
     <property name="geometry">
      <rect>
@@ -71,11 +61,11 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>26</pointsize>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Predição de Faturamento</string>
+     <string>Robaina Predição de Faturamento</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="txt_totalFaturado">
@@ -109,7 +99,7 @@
      <string>Total faturado</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox">
+   <widget class="QSpinBox" name="sb_colunas">
     <property name="geometry">
      <rect>
       <x>740</x>
@@ -138,6 +128,31 @@
     <property name="text">
      <string>Tipo de predição</string>
     </property>
+   </widget>
+   <widget class="QTableWidget" name="tb_faturamento">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>150</y>
+      <width>691</width>
+      <height>351</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>Ano</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Mes</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Faturamento</string>
+     </property>
+    </column>
    </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
