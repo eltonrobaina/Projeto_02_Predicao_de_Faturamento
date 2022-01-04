@@ -185,11 +185,28 @@ class Ui_MainWindow(object):
             med_pond = df_ult['Ponderado'].sum() / df_ult['Pesos'].sum()
             predicao = 'Predição ponderada de R$ ' + str('%0.02f' %med_pond) + ' para os próximos meses.'
             self.txt_predicao.setText(predicao)
-
-
-
-
-
+        ### Segregação dos Dados ###
+        elif self.rb_segregacaoDados.isChecked() == True:
+            df_janeiro = df.loc[df['Mes'] == 1]
+            med_seg = df_janeiro['Faturamento'].mean()
+            predicao = 'Predição segregada de R$ ' + str('%0.02f' %med_seg) + ' para janeiro.'
+            self.txt_predicao.setText(predicao)
+        ### Regressão Linear ###
+        elif self.rb_regressaoLinear.isChecked() == True:
+            coefficients = np.polyfit(df.index, df['Faturamento'], 1)
+            a = coefficients[0]
+            b = coefficients[1]
+            jan_reta = a * 36 + b
+            predicao = 'Predição por regressão de R$ ' + str('%0.02f' %jan_reta) + ' para janeiro.'
+            self.txt_predicao.setText(predicao)
+        ### Series temporais ###
+        elif self.rb_seriesTemporais.isChecked() == True:
+            model = AutoReg(df['Faturamento'], lags=1, old_names=True) #old_names só foi utilizado por conta de um aviso da próxima versão
+            model_fit = model.fit()
+            yhat = model_fit.predict(len(df['Faturamento']), len(df['Faturamento'])+2)
+            pred = np.array(yhat)
+            predicao = 'Predição por serie temporal de R$ ' + str('%0.02f' %pred[0]) + ' para janeiro e R$ ' + str('%0.02f' %pred[1]) + ' para fevereiro.'
+            self.txt_predicao.setText(predicao)
 
 if __name__ == "__main__":
     import sys
