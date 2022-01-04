@@ -133,7 +133,7 @@ class Ui_MainWindow(object):
         self.rb_seriesTemporais.setText(_translate("MainWindow", "Séries Temporais"))
 
         self.bt_arquivo.clicked.connect(self.openFile)
-        #self.bt_predizer.clicked.connect(self.predicao)
+        self.bt_predizer.clicked.connect(self.predicao)
 
     def openFile(self):
         # Localiza o caminho do arquivo
@@ -161,6 +161,31 @@ class Ui_MainWindow(object):
         #Soma do faturamento
         soma_faturamento = str('R$%0.02f' %sum(self.all_data['Faturamento']))
         self.txt_totalFaturado.setText(soma_faturamento)
+    
+    def predicao(self):
+        df = self.all_data
+        ### Media ###
+        if self.rb_media.isChecked() == True:
+            media = df['Faturamento'].mean()
+            predicao = 'Nos proximos meses sera faturado R$ ' + str('%0.02f' %media) + ' /mes em media.'
+            self.txt_predicao.setText(predicao)
+        ### Desvio Padrão ###
+        elif self.rb_desvioPadrao.isChecked() == True:
+            media = df['Faturamento'].mean()
+            desvpad = df['Faturamento'].std()
+            coe_var = (desvpad / media) * 100
+            predicao = 'Predição de R$ ' + str('%0.02f' %media) + '/mes podendo variar em torno de ' + str('%0.02f' %coe_var) + '%'
+            self.txt_predicao.setText(predicao)
+        ### Media Ponderada ###
+        elif self.rb_MediaPonderada.isChecked() == True:
+            lista = np.transpose((np.array([df['Faturamento'].tail(), np.arange(1,6)])))
+            pesos = np.arange(1,6)
+            df_ult = pd.DataFrame(lista, columns = ['Ultimos', 'Pesos'])
+            df_ult['Ponderado'] = df_ult['Ultimos'] * df_ult['Pesos']
+            med_pond = df_ult['Ponderado'].sum() / df_ult['Pesos'].sum()
+            predicao = 'Predição ponderada de R$ ' + str('%0.02f' %med_pond) + ' para os próximos meses.'
+            self.txt_predicao.setText(predicao)
+
 
 
 
